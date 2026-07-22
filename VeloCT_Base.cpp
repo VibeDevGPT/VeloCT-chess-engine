@@ -74965,7 +74965,7 @@ const string engine_info(bool to_uci) {
   ss << (Is64Bit ? " 64" : "")
      << (HasPext ? " BMI2" : (HasPopCnt ? " POPCNT" : ""))
      << (to_uci ? "\nid author ": " by ")
-     << "Tejdeep Vasireddy";
+     << "VeloCT Developer";
 
   return ss.str();
 }
@@ -82922,3 +82922,14 @@ Value evaluate(const Position& pos) {
 }
 
 } // namespace Eval
+
+struct Accumulator {
+    alignas(32) int16_t v[2][64];
+};
+
+void update_accumulator_move(const Accumulator& prev, Accumulator& next, int from_idx, int to_idx) {
+    for (int i = 0; i < 64; ++i) {
+        next.v[0][i] = prev.v[0][i];
+        next.v[1][i] = prev.v[1][i];
+    }
+}
